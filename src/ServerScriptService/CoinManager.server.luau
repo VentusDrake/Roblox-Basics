@@ -53,7 +53,6 @@ local function onCoinTouched(part, coin)
         return
     end
 
-
     coinPickedUp(coin)
     CurrencyService.AddCoins(player)
 end
