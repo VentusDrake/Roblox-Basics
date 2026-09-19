@@ -1,0 +1,6 @@
+{
+  "luau-lsp.studioPlugin.enabled": true,
+  "luau-lsp.studioPlugin.port": 3667,
+
+  "editor.semanticHighlighting.enabled": true
+}
