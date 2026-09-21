@@ -1,6 +1,9 @@
+local ServerScriptService = game:GetService("ServerScriptService")
 local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local PlayerStatsService = require(ServerScriptService.Services.PlayerStatsService)
 
 local SpeedUpgradeButtonCdRemoteEvent = ReplicatedStorage.Remotes.SpeedUpgradeButtonCd
 
@@ -20,7 +23,7 @@ local function onSpeedUpgradeButtonTouched(part)
         return
     end
 
-    if speedUpgradeButtonCooldown[player] then 
+    if speedUpgradeButtonCooldown[player] then
         return
     end
 
@@ -28,9 +31,14 @@ local function onSpeedUpgradeButtonTouched(part)
     if not humanoid or humanoid.Health <= 0 then
         return
     end
-
-    print("Speed Upgrade Button touched by player: " .. player.Name)
+    
     speedUpgradeButtonCooldown[player] = true
+    
+    local success = PlayerStatsService.UpgradePlayerSpeed(player)
+    if not success then
+        speedUpgradeButtonCooldown[player] = nil
+        return
+    end
 
     SpeedUpgradeButtonCdRemoteEvent:FireClient(player, speedUpgradeButtonCd)
 
