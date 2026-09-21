@@ -4,23 +4,30 @@ local PlayerStatsService = require(ServerScriptService.Services.PlayerStatsServi
 
 local initializedPlayers = {}
 
+local function initializeLeaderstats(player)
+    local leaderstats = Instance.new("Folder")
+    leaderstats.Name = "leaderstats"
+    leaderstats.Parent = player
+    
+    local coins = Instance.new("IntValue")
+    coins.Name = "Coins"
+    coins.Value = 0
+    coins.Parent = leaderstats
+
+    local speed = Instance.new("IntValue")
+    speed.Name = "Speed"
+    speed.Value = PlayerStatsService.GetPlayerSpeed(player)
+    speed.Parent = leaderstats
+end
+
 local function onPlayerAdded(player)
     if initializedPlayers[player] then
         return
     end
 
     initializedPlayers[player] = true
-
-    local leaderstats = Instance.new("Folder")
-    leaderstats.Name = "leaderstats"
-    leaderstats.Parent = player
-
-    local coins = Instance.new("IntValue")
-    coins.Name = "Coins"
-    coins.Value = 0
-    coins.Parent = leaderstats
-
     PlayerStatsService.InitializePlayerStats(player)
+    initializeLeaderstats(player)
 
     player.CharacterAdded:Connect(function(character)
         PlayerStatsService.ApplyStatsToCharacter(player, character)
